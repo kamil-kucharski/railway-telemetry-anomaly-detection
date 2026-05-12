@@ -1,8 +1,8 @@
 # Documentation
 
-This folder contains dataset documentation and other non-private reference files used to understand the project data.
+This folder contains dataset documentation.
 
-Current file:
+File:
 
 ```text
 Data Description_Metro.pdf
