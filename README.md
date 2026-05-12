@@ -39,6 +39,8 @@ metroguard-insight/
 |-- data/
 |   |-- README.md
 |   `-- MetroPT3.csv
+|-- docs/
+|   `-- Data Description_Metro.pdf
 |-- notebooks/
 |   `-- 01_metroguard_telemetry_analysis.ipynb
 |-- outputs/
@@ -109,4 +111,3 @@ This section will be completed after the first full analysis run.
 ## License
 
 This project is released under the MIT License. The MetroPT-3 dataset has its own license and citation requirements from UCI.
-

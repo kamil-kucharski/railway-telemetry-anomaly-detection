@@ -16,3 +16,4 @@ The original UCI download may be named `MetroPT3(AirCompressor).csv`. Rename it 
 
 The raw CSV file is intentionally ignored by Git and should not be committed to GitHub.
 
+Dataset documentation can be stored in the `docs/` folder.
