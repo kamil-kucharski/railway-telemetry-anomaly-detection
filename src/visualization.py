@@ -14,7 +14,14 @@ def save_current_figure(output_path):
     plt.savefig(path, dpi=150, bbox_inches="tight")
 
 
-def plot_sensor_over_time(data, timestamp_column, sensor_column, title, output_path=None):
+def plot_sensor_over_time(
+    data,
+    timestamp_column,
+    sensor_column,
+    title,
+    output_path=None,
+    show_plot=True,
+):
     """Plot one sensor as a time-series line chart."""
     plt.figure(figsize=(12, 4))
     sns.lineplot(data=data, x=timestamp_column, y=sensor_column, linewidth=1)
@@ -25,7 +32,8 @@ def plot_sensor_over_time(data, timestamp_column, sensor_column, title, output_p
     if output_path:
         save_current_figure(output_path)
 
-    plt.show()
+    if show_plot:
+        plt.show()
 
 
 def plot_multiple_sensors_over_time(
@@ -34,6 +42,7 @@ def plot_multiple_sensors_over_time(
     sensor_columns,
     title,
     output_path=None,
+    show_plot=True,
 ):
     """Plot several sensors on one time-series chart."""
     plt.figure(figsize=(12, 5))
@@ -49,7 +58,8 @@ def plot_multiple_sensors_over_time(
     if output_path:
         save_current_figure(output_path)
 
-    plt.show()
+    if show_plot:
+        plt.show()
 
 
 def plot_correlation_heatmap(
@@ -57,6 +67,7 @@ def plot_correlation_heatmap(
     sensor_columns,
     title="Sensor Correlation Heatmap",
     output_path=None,
+    show_plot=True,
 ):
     """Plot a correlation heatmap for selected sensor columns."""
     plt.figure(figsize=(10, 8))
@@ -67,7 +78,8 @@ def plot_correlation_heatmap(
     if output_path:
         save_current_figure(output_path)
 
-    plt.show()
+    if show_plot:
+        plt.show()
 
 
 def plot_sensor_distributions(
@@ -75,7 +87,9 @@ def plot_sensor_distributions(
     sensor_columns,
     bins=40,
     title="Sensor Distributions",
+    show_kde=False,
     output_path=None,
+    show_plot=True,
 ):
     """Plot histograms for selected sensor columns."""
     number_of_sensors = len(sensor_columns)
@@ -85,7 +99,7 @@ def plot_sensor_distributions(
     axes = axes.flatten()
 
     for index, column in enumerate(sensor_columns):
-        sns.histplot(data[column], bins=bins, kde=True, ax=axes[index])
+        sns.histplot(data[column], bins=bins, kde=show_kde, ax=axes[index])
         axes[index].set_title(column)
         axes[index].set_xlabel("Value")
         axes[index].set_ylabel("Count")
@@ -98,10 +112,17 @@ def plot_sensor_distributions(
     if output_path:
         save_current_figure(output_path)
 
-    plt.show()
+    if show_plot:
+        plt.show()
 
 
-def plot_confusion_matrix(matrix, labels, title="Confusion Matrix", output_path=None):
+def plot_confusion_matrix(
+    matrix,
+    labels,
+    title="Confusion Matrix",
+    output_path=None,
+    show_plot=True,
+):
     """Plot a confusion matrix with readable labels."""
     plt.figure(figsize=(5, 4))
     sns.heatmap(matrix, annot=True, fmt="d", cmap="Blues", xticklabels=labels, yticklabels=labels)
@@ -112,4 +133,5 @@ def plot_confusion_matrix(matrix, labels, title="Confusion Matrix", output_path=
     if output_path:
         save_current_figure(output_path)
 
-    plt.show()
+    if show_plot:
+        plt.show()
