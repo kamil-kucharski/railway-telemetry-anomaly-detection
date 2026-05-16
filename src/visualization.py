@@ -3,6 +3,7 @@
 from pathlib import Path
 
 import matplotlib.pyplot as plt
+import pandas as pd
 import seaborn as sns
 
 
@@ -108,6 +109,70 @@ def plot_sensor_distributions(
         axes[index].set_visible(False)
 
     fig.suptitle(title, y=1.02)
+
+    if output_path:
+        save_current_figure(output_path)
+
+    if show_plot:
+        plt.show()
+
+
+def plot_sensor_state_means(
+    data,
+    sensor_columns,
+    state_column="operating_state",
+    title="Mean Sensor Values by Operating State",
+    output_path=None,
+    show_plot=True,
+):
+    """Plot mean sensor values for each operating state."""
+    mean_data = data.groupby(state_column)[sensor_columns].mean().reset_index()
+    tidy_data = mean_data.melt(
+        id_vars=state_column,
+        value_vars=sensor_columns,
+        var_name="sensor",
+        value_name="mean_value",
+    )
+
+    plt.figure(figsize=(12, 5))
+    sns.barplot(data=tidy_data, x="sensor", y="mean_value", hue=state_column)
+    plt.title(title)
+    plt.xlabel("Sensor")
+    plt.ylabel("Mean value")
+    plt.xticks(rotation=35, ha="right")
+    plt.legend(title="Operating state")
+
+    if output_path:
+        save_current_figure(output_path)
+
+    if show_plot:
+        plt.show()
+
+
+def plot_sensor_with_failure_windows(
+    data,
+    timestamp_column,
+    sensor_column,
+    failure_windows,
+    title,
+    output_path=None,
+    show_plot=True,
+):
+    """Plot one sensor over time and highlight known failure windows."""
+    plt.figure(figsize=(12, 4))
+    sns.lineplot(data=data, x=timestamp_column, y=sensor_column, linewidth=1)
+
+    axis = plt.gca()
+    for index, failure_window in enumerate(failure_windows):
+        start_time = pd.Timestamp(failure_window["start"])
+        end_time = pd.Timestamp(failure_window["end"])
+        label = "Failure window" if index == 0 else None
+        axis.axvspan(start_time, end_time, color="red", alpha=0.18, label=label)
+
+    plt.title(title)
+    plt.xlabel("Time")
+    plt.ylabel(sensor_column)
+    plt.legend()
 
     if output_path:
         save_current_figure(output_path)
